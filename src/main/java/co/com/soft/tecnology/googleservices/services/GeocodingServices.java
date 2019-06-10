@@ -102,27 +102,5 @@ public class GeocodingServices {
     return googleAddreess;
   }
 
-  public static void main(String[] args) {
-
-    GeocodingServices geocodingServices =
-        GeocodingServices.getInstace("AIzaSyAczKtNuS7MdK4QTXZWvKR6M4HatzMd14g");
-
-    try {
-      System.out.println(geocodingServices.geocodingAddress("7102 SW 44 Street"));
-    } catch (ApiException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (InterruptedException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (Exception e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-
-  }
 
 }
