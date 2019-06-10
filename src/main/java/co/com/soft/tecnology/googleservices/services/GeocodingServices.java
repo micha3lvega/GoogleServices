@@ -1,13 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package co.com.soft.tecnology.googleservices.services;
 
-import co.com.soft.tecnology.googleservices.qbo.ContextFactory;
-import co.com.soft.tecnology.googleservices.qbo.GoogleAddreess;
-import com.google.gson.Gson;
+import java.io.IOException;
+
 import com.google.gson.GsonBuilder;
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
@@ -16,61 +10,119 @@ import com.google.maps.model.AddressComponent;
 import com.google.maps.model.AddressComponentType;
 import com.google.maps.model.GeocodingResult;
 import com.google.maps.model.Geometry;
-import java.io.IOException;
 
-/**
- *
- * @author micha3lvega
- */
+import co.com.soft.tecnology.googleservices.qbo.ContextFactory;
+import co.com.soft.tecnology.googleservices.qbo.GoogleAddreess;
+
 public class GeocodingServices {
 
-    public static GoogleAddreess geocodingAddress(String address) throws ApiException, InterruptedException, IOException {
+  private static String key;
+  private static GeocodingServices instace;
+  private static GeoApiContext context;
 
-        GoogleAddreess googleAddreess = new GoogleAddreess();
+  /**
+   * protected constructor
+   */
+  protected GeocodingServices() {}
 
-        GeoApiContext context = ContextFactory.getContext();
+  /**
+   * protected constructor
+   */
+  protected GeocodingServices(String key) {
+    GeocodingServices.key = key;
+  }
 
-        GeocodingResult[] results = GeocodingApi.geocode(context, address).await();
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        for (GeocodingResult result : results) {
-
-            googleAddreess.setAddress(address);
-            googleAddreess.setFormattedAddress(result.formattedAddress);
-            googleAddreess.setPlaceId(result.placeId);
-
-            AddressComponent[] addressComponents = result.addressComponents;
-
-            for (AddressComponent addressComponent : addressComponents) {
-                AddressComponentType[] types = addressComponent.types;
-
-                for (AddressComponentType type : types) {
-
-                    switch (type.name()) {
-                        case "ADMINISTRATIVE_AREA_LEVEL_1":
-                            googleAddreess.setCity(addressComponent.longName);
-                            googleAddreess.setShortCity(addressComponent.shortName);
-                            break;
-                        case "POLITICAL":
-                            googleAddreess.setCountry(addressComponent.longName);
-                            googleAddreess.setShortCountry(addressComponent.shortName);
-                            break;
-                        case "POSTAL_CODE":
-                            googleAddreess.setPostalCode(addressComponent.longName);
-                            break;
-                        case "LOCALITY":
-                            googleAddreess.setZone(addressComponent.longName);
-                            break;
-                    }
-                }
-            }
-
-            Geometry geometry = result.geometry;
-            googleAddreess.setLat(geometry.location.lat);
-            googleAddreess.setLng(geometry.location.lng);
-
-        }
-
-        return googleAddreess;
+  public static GeocodingServices getInstace(String key) {
+    if (GeocodingServices.instace == null) {
+      GeocodingServices.instace = new GeocodingServices(key);
+      GeocodingServices.context = ContextFactory.getContext(key);
     }
+    return GeocodingServices.instace;
+  }
+
+  public GoogleAddreess geocodingAddress(String address)
+      throws ApiException, InterruptedException, IOException, Exception {
+
+    if (GeocodingServices.key == null) {
+      throw new Exception("invalidate Key");
+    }
+
+    if ((address == null) || address.isEmpty()) {
+      throw new Exception("invalidate address");
+    }
+
+    GoogleAddreess googleAddreess = new GoogleAddreess();
+
+    System.out.println("address: " + address);
+    if (address.contains("#")) {
+      address = address.replace("#", "N");
+      System.out.println("new address: " + address);
+    }
+
+    GeocodingResult[] results = GeocodingApi.geocode(GeocodingServices.context, address).await();
+    new GsonBuilder().setPrettyPrinting().create();
+    for (GeocodingResult result : results) {
+
+      googleAddreess.setAddress(address);
+      googleAddreess.setFormattedAddress(result.formattedAddress);
+      googleAddreess.setPlaceId(result.placeId);
+
+      AddressComponent[] addressComponents = result.addressComponents;
+
+      for (AddressComponent addressComponent : addressComponents) {
+        AddressComponentType[] types = addressComponent.types;
+
+        for (AddressComponentType type : types) {
+
+          switch (type.name()) {
+            case "ADMINISTRATIVE_AREA_LEVEL_1":
+              googleAddreess.setCity(addressComponent.longName);
+              googleAddreess.setShortCity(addressComponent.shortName);
+              break;
+            case "POLITICAL":
+              googleAddreess.setCountry(addressComponent.longName);
+              googleAddreess.setShortCountry(addressComponent.shortName);
+              break;
+            case "POSTAL_CODE":
+              googleAddreess.setPostalCode(addressComponent.longName);
+              break;
+            case "LOCALITY":
+              googleAddreess.setZone(addressComponent.longName);
+              break;
+          }
+        }
+      }
+
+      Geometry geometry = result.geometry;
+      googleAddreess.setLat(geometry.location.lat);
+      googleAddreess.setLng(geometry.location.lng);
+
+    }
+
+    return googleAddreess;
+  }
+
+  public static void main(String[] args) {
+
+    GeocodingServices geocodingServices =
+        GeocodingServices.getInstace("AIzaSyAczKtNuS7MdK4QTXZWvKR6M4HatzMd14g");
+
+    try {
+      System.out.println(geocodingServices.geocodingAddress("7102 SW 44 Street"));
+    } catch (ApiException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    } catch (InterruptedException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+  }
 
 }
