@@ -1,124 +1,126 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+/* To change this license header, choose License Headers in Project Properties. To change this
+ * template file, choose Tools | Templates and open the template in the editor. */
 package co.com.soft.tecnology.googleservices.qbo;
 
 import java.io.Serializable;
 
 /**
  *
- * @author micha3lvega
+ * @author m.vega.carrillo
  */
 public class GoogleAddreess implements Serializable {
 
-    private String address;
-    private String formattedAddress;
-    private String placeId;
-    private String city;
-    private String shortCity;
-    private String country;
-    private String shortCountry;
-    private String postalCode;
-    private String zone;
-    private Double lat;
-    private Double lng;
 
-    public GoogleAddreess() {
-    }
+  private static final long serialVersionUID = 1L;
+  private String address;
+  private String formattedAddress;
+  private String placeId;
+  private String city;
+  private String shortCity;
+  private String country;
+  private String shortCountry;
+  private String postalCode;
+  private String zone;
+  private Double lat;
+  private Double lng;
 
-    public String getAddress() {
-        return address;
-    }
+  public GoogleAddreess() {}
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+  public String getAddress() {
+    return this.address;
+  }
 
-    public String getFormattedAddress() {
-        return formattedAddress;
-    }
+  public void setAddress(String address) {
+    this.address = address;
+  }
 
-    public void setFormattedAddress(String formattedAddress) {
-        this.formattedAddress = formattedAddress;
-    }
+  public String getFormattedAddress() {
+    return this.formattedAddress;
+  }
 
-    public String getPlaceId() {
-        return placeId;
-    }
+  public void setFormattedAddress(String formattedAddress) {
+    this.formattedAddress = formattedAddress;
+  }
 
-    public void setPlaceId(String placeId) {
-        this.placeId = placeId;
-    }
+  public String getPlaceId() {
+    return this.placeId;
+  }
 
-    public String getCity() {
-        return city;
-    }
+  public void setPlaceId(String placeId) {
+    this.placeId = placeId;
+  }
 
-    public void setCity(String city) {
-        this.city = city;
-    }
+  public String getCity() {
+    return this.city;
+  }
 
-    public String getShortCity() {
-        return shortCity;
-    }
+  public void setCity(String city) {
+    this.city = city;
+  }
 
-    public void setShortCity(String shortCity) {
-        this.shortCity = shortCity;
-    }
+  public String getShortCity() {
+    return this.shortCity;
+  }
 
-    public String getCountry() {
-        return country;
-    }
+  public void setShortCity(String shortCity) {
+    this.shortCity = shortCity;
+  }
 
-    public void setCountry(String country) {
-        this.country = country;
-    }
+  public String getCountry() {
+    return this.country;
+  }
 
-    public String getShortCountry() {
-        return shortCountry;
-    }
+  public void setCountry(String country) {
+    this.country = country;
+  }
 
-    public void setShortCountry(String shortCountry) {
-        this.shortCountry = shortCountry;
-    }
+  public String getShortCountry() {
+    return this.shortCountry;
+  }
 
-    public String getPostalCode() {
-        return postalCode;
-    }
+  public void setShortCountry(String shortCountry) {
+    this.shortCountry = shortCountry;
+  }
 
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
+  public String getPostalCode() {
+    return this.postalCode;
+  }
 
-    public Double getLat() {
-        return lat;
-    }
+  public void setPostalCode(String postalCode) {
+    this.postalCode = postalCode;
+  }
 
-    public void setLat(Double lat) {
-        this.lat = lat;
-    }
+  public Double getLat() {
+    return this.lat;
+  }
 
-    public Double getLng() {
-        return lng;
-    }
+  public void setLat(Double lat) {
+    this.lat = lat;
+  }
 
-    public void setLng(Double lng) {
-        this.lng = lng;
-    }
+  public Double getLng() {
+    return this.lng;
+  }
 
-    public String getZone() {
-        return zone;
-    }
+  public void setLng(Double lng) {
+    this.lng = lng;
+  }
 
-    public void setZone(String zone) {
-        this.zone = zone;
-    }
+  public String getZone() {
+    return this.zone;
+  }
 
-    @Override
-    public String toString() {
-        return "GoogleAddreess{" + "address=" + address + ", formattedAddress=" + formattedAddress + ", placeId=" + placeId + ", city=" + city + ", shortCity=" + shortCity + ", country=" + country + ", shortCountry=" + shortCountry + ", postalCode=" + postalCode + ", zone=" + zone + ", lat=" + lat + ", lng=" + lng + '}';
-    }
+  public void setZone(String zone) {
+    this.zone = zone;
+  }
+
+  @Override
+  public String toString() {
+    return "GoogleAddreess{" + "address=" + this.address + ", formattedAddress="
+        + this.formattedAddress + ", placeId=" + this.placeId + ", city=" + this.city
+        + ", shortCity=" + this.shortCity + ", country=" + this.country + ", shortCountry="
+        + this.shortCountry + ", postalCode=" + this.postalCode + ", zone=" + this.zone + ", lat="
+        + this.lat + ", lng=" + this.lng + '}';
+  }
 
 }

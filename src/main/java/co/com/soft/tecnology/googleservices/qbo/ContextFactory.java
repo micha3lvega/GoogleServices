@@ -1,11 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+/* To change this license header, choose License Headers in Project Properties. To change this
+ * template file, choose Tools | Templates and open the template in the editor. */
 package co.com.soft.tecnology.googleservices.qbo;
 
-import co.com.soft.tecnology.googleservices.util.Constants;
 import com.google.maps.GeoApiContext;
 
 /**
@@ -14,14 +10,16 @@ import com.google.maps.GeoApiContext;
  */
 public class ContextFactory {
 
-    public static GeoApiContext getContext() {
-        try {
-            GeoApiContext context = new GeoApiContext.Builder().apiKey(Constants.KEY).build();
-            return context;
-        } catch (Exception e) {
-            Constants.LOG.error("[ContextFactory] (getContext) Exception: " + e.getLocalizedMessage(), e);
-            return null;
-        }
+
+  private static GeoApiContext context;
+
+  public static GeoApiContext getContext(String key) {
+
+    if (ContextFactory.context == null) {
+      ContextFactory.context = new GeoApiContext.Builder().apiKey(key).build();
     }
+    return ContextFactory.context;
+
+  }
 
 }
