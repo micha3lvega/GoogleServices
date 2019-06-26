@@ -11,6 +11,7 @@ import com.google.maps.model.AddressComponentType;
 import com.google.maps.model.GeocodingResult;
 import com.google.maps.model.Geometry;
 
+import co.com.soft.tecnology.googleservices.GoogleApiException;
 import co.com.soft.tecnology.googleservices.qbo.ContextFactory;
 import co.com.soft.tecnology.googleservices.qbo.GoogleAddreess;
 
@@ -41,22 +42,20 @@ public class GeocodingServices {
   }
 
   public GoogleAddreess geocodingAddress(String address)
-      throws ApiException, InterruptedException, IOException, Exception {
+      throws ApiException, InterruptedException, IOException, GoogleApiException {
 
     if (GeocodingServices.key == null) {
-      throw new Exception("invalidate Key");
+      throw new GoogleApiException("invalidate Key");
     }
 
     if ((address == null) || address.isEmpty()) {
-      throw new Exception("invalidate address");
+      throw new GoogleApiException("invalidate address");
     }
 
     GoogleAddreess googleAddreess = new GoogleAddreess();
 
-    System.out.println("address: " + address);
     if (address.contains("#")) {
       address = address.replace("#", "N");
-      System.out.println("new address: " + address);
     }
 
     GeocodingResult[] results = GeocodingApi.geocode(GeocodingServices.context, address).await();
@@ -88,6 +87,8 @@ public class GeocodingServices {
               break;
             case "LOCALITY":
               googleAddreess.setZone(addressComponent.longName);
+              break;
+            default:
               break;
           }
         }
