@@ -1,6 +1,7 @@
 package co.com.soft.tecnology.googleservices.services;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,9 +15,9 @@ import com.google.maps.model.TravelMode;
 import co.com.soft.tecnology.googleservices.GoogleApiException;
 import co.com.soft.tecnology.googleservices.qbo.ContextFactory;
 
-public class RouteServices {
+public class RouteServices implements Serializable {
 
-  public final String URL_API = "https://maps.googleapis.com/maps/api/directions/json";
+  private static final long serialVersionUID = 1L;
 
   private LatLng startRoute;
   private LatLng endRoute;
@@ -26,44 +27,48 @@ public class RouteServices {
 
   public RouteServices(double startLat, double startLog, double endLat, double endLog, String key) {
 
-    this.startRoute = new LatLng(startLat, startLog);
-    this.endRoute = new LatLng(endLat, endLog);
+    startRoute = new LatLng(startLat, startLog);
+    endRoute = new LatLng(endLat, endLog);
     this.key = key;
 
   }
 
   public DirectionsResult calculateRoute() throws GoogleApiException {
 
-    if (this.key == null) {
+    if (key == null) {
       throw new GoogleApiException("invalidate Key");
     }
 
-    if (this.optimized == null) {
-      System.out.println("Optimizacion por defecto");
-      this.optimized = true;
+    if (optimized == null) {
+      optimized = true;
     }
 
-    DirectionsApiRequest request = DirectionsApi.newRequest(ContextFactory.getContext(this.key))
-        .origin(this.startRoute).destination(this.endRoute).mode(TravelMode.DRIVING);
+    DirectionsApiRequest request = DirectionsApi.newRequest(ContextFactory.getContext(key))
+        .origin(startRoute).destination(endRoute).mode(TravelMode.DRIVING);
 
     StringBuilder waypoints = null;
-    if (this.points != null) {
+
+    if (points != null) {
+
       waypoints = new StringBuilder();
-      for (String waypoint : this.points) {
+      for (String waypoint : points) {
         waypoints.append(waypoint);
         waypoints.append("|");
       }
+
+    } else {
+      throw new GoogleApiException("No points");
     }
 
-    if ((waypoints != null) && !waypoints.toString().isEmpty()) {
-      request.waypoints(waypoints.toString());
-    }
-
-    request.optimizeWaypoints(true);
+    request.waypoints(waypoints.toString());
+    request.optimizeWaypoints(optimized);
 
     try {
       return request.await();
-    } catch (ApiException | InterruptedException | IOException e) {
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new GoogleApiException(e.getMessage());
+    } catch (ApiException | IOException e) {
       throw new GoogleApiException(e.getMessage());
     }
 
@@ -75,7 +80,7 @@ public class RouteServices {
    * @return the endRoute
    */
   public LatLng getEndRoute() {
-    return this.endRoute;
+    return endRoute;
   }
 
   /**
@@ -96,7 +101,7 @@ public class RouteServices {
    * @return the startRoute
    */
   public LatLng getStartRoute() {
-    return this.startRoute;
+    return startRoute;
   }
 
   /**
@@ -110,7 +115,7 @@ public class RouteServices {
    * @return the points
    */
   public List<String> getPoints() {
-    return this.points;
+    return points;
   }
 
   /**
@@ -122,11 +127,11 @@ public class RouteServices {
 
   public void addPoint(double lat, double log) {
 
-    if (this.points == null) {
-      this.points = new ArrayList<>();
+    if (points == null) {
+      points = new ArrayList<>();
     }
 
-    this.points.add(lat + "," + log);
+    points.add(lat + "," + log);
 
   }
 
@@ -134,7 +139,7 @@ public class RouteServices {
    * @return the optimized
    */
   public Boolean getOptimized() {
-    return this.optimized;
+    return optimized;
   }
 
   /**
